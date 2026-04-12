@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seedance 2.0 — AI Studio OS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f7f5f2; --white: #ffffff; --black: #0f0f0f;
+      --text: #1a1a1a; --muted: #6b6b6b; --subtle: #a0a0a0;
+      --border: #e2dfd9; --border-dark: #c8c4bc;
+      --orange: #ff6500; --orange-bg: #fff4ee;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+    nav { background: var(--cream); border-bottom: 1px solid var(--border); padding: 0 48px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .nav-logo img { height: 28px; }
+    .nav-tag { font-size: 12px; color: var(--muted); border: 1px solid var(--border-dark); padding: 4px 12px; border-radius: 20px; }
+    .hero { padding: 100px 48px 80px; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .hero-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--orange); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(38px,4.5vw,60px); font-weight: 800; line-height: 1.08; color: var(--black); margin-bottom: 24px; letter-spacing: -.02em; }
+    .hero h1 em { font-style: normal; text-decoration: underline; text-decoration-color: var(--orange); text-underline-offset: 5px; }
+    .hero-desc { font-size: 18px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; max-width: 420px; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { font-size: 13px; color: var(--text); background: var(--white); border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; }
+    .hero-diagram { width: 100%; max-width: 360px; }
+    .brain-box { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+    .brain-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--subtle); margin-bottom: 20px; }
+    .mem-row { margin-bottom: 12px; }
+    .mem-label-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 13px; }
+    .mem-label-row span:first-child { color: var(--text); font-weight: 500; }
+    .mem-label-row span:last-child { color: var(--subtle); }
+    .mem-bar { height: 8px; background: #ebe8e2; border-radius: 4px; overflow: hidden; }
+    .mem-fill { height: 100%; border-radius: 4px; }
+    .fill-red { background: #ef4444; width: 91%; }
+    .fill-orange { background: var(--orange); width: 23%; }
+    .fill-green { background: #22c55e; width: 60%; }
+    .brain-note { margin-top: 18px; font-size: 12px; color: var(--subtle); text-align: center; border-top: 1px solid var(--border); padding-top: 14px; }
+    .section-wrap { border-top: 1px solid var(--border); }
+    .section-wrap.alt { background: var(--white); }
+    .section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
+    .section-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--subtle); margin-bottom: 8px; }
+    .section-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 64px; }
+    .section-header.full { grid-template-columns: 1fr; }
+    h2 { font-size: clamp(28px,3vw,44px); font-weight: 800; line-height: 1.12; letter-spacing: -.02em; color: var(--black); }
+    .section-desc { font-size: 17px; color: var(--muted); line-height: 1.65; padding-top: 8px; }
+    .analogy-row { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 0; align-items: center; margin-bottom: 48px; }
+    .ana-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 36px 32px; }
+    .ana-card.dark-card { background: var(--black); border-color: var(--black); }
+    .ana-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .ana-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--black); }
+    .ana-card.dark-card h3 { color: var(--white); }
+    .ana-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .ana-card.dark-card p { color: rgba(255,255,255,.55); }
+    .vs-circle { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .vs-line { width: 1px; height: 40px; background: var(--border); }
+    .vs-dot { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--muted); background: var(--cream); }
+    .insight-strip { border: 1px solid var(--border); border-left: 3px solid var(--orange); background: var(--white); border-radius: 0 10px 10px 0; padding: 20px 24px; display: flex; gap: 16px; align-items: flex-start; }
+    .insight-strip .icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .insight-strip p { font-size: 15px; color: var(--text); line-height: 1.6; }
+    .insight-strip strong { color: var(--black); }
+    .types-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 48px; }
+    .type-cell { background: var(--white); padding: 40px 32px; }
+    .type-num { font-size: 12px; font-weight: 700; color: var(--subtle); letter-spacing: .08em; margin-bottom: 20px; }
+    .type-icon-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .type-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .icon-orange { background: var(--orange-bg); }
+    .icon-blue { background: #eef2ff; }
+    .icon-green { background: #f0fdf4; }
+    .type-name { font-size: 19px; font-weight: 800; color: var(--black); line-height: 1.2; }
+    .type-sub { font-size: 12px; color: var(--subtle); font-weight: 500; margin-top: 2px; }
+    .type-desc { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
+    .type-examples { border-top: 1px solid var(--border); padding-top: 18px; }
+    .example-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text); margin-bottom: 7px; }
+    .example-arrow { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+    .stack-note { background: var(--black); border-radius: 12px; padding: 36px 40px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
+    .stack-icon { font-size: 32px; }
+    .stack-note h4 { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .stack-note p { font-size: 15px; color: rgba(255,255,255,.6); line-height: 1.65; }
+    .stack-note p strong { color: var(--orange); font-weight: 600; }
+    .flow-list { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--white); margin-bottom: 32px; }
+    .flow-item { display: grid; grid-template-columns: 64px 1fr; border-bottom: 1px solid var(--border); }
+    .flow-item:last-child { border-bottom: none; }
+    .flow-num-cell { display: flex; align-items: flex-start; justify-content: center; padding: 28px 0; border-right: 1px solid var(--border); }
+    .flow-num { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: white; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .flow-num.last-num { background: var(--black); color: var(--white); font-size: 16px; }
+    .flow-text { padding: 28px; }
+    .flow-text h4 { font-size: 16px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+    .flow-text p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .code-tag { display: inline-block; background: var(--black); color: var(--orange); font-family: 'Courier New',monospace; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 5px; margin-top: 8px; }
+    .cmd-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .cmd-cell { background: var(--white); padding: 32px; display: flex; flex-direction: column; gap: 10px; }
+    .cmd-top { display: flex; align-items: center; justify-content: space-between; }
+    .cmd-code { font-family: 'Courier New',monospace; font-size: 15px; font-weight: 700; color: var(--black); }
+    .cmd-arrow { font-size: 18px; color: var(--orange); font-weight: 700; }
+    .cmd-desc { font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .takeaway-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .takeaway-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 36px 28px; }
+    .takeaway-num { font-size: 48px; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 16px; letter-spacing: -.03em; }
+    .takeaway-title { font-size: 17px; font-weight: 700; color: var(--black); margin-bottom: 10px; }
+    .takeaway-text { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .footer-wrap { border-top: 1px solid var(--border); }
+    footer { max-width: 1100px; margin: 0 auto; padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    footer img { height: 26px; opacity: .6; }
+    footer p { font-size: 13px; color: var(--subtle); }
+    footer span { color: var(--orange); }
+    .terminal-wrap { background: #0f0f0f; border-radius: 14px; overflow: hidden; border: 1px solid #2a2a2a; margin-bottom: 48px; }
+    .terminal-bar { background: #1a1a1a; padding: 12px 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #2a2a2a; }
+    .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .t-red { background: #ef4444; } .t-yellow { background: #f59e0b; } .t-green { background: #22c55e; }
+    .t-title { font-size: 12px; color: rgba(255,255,255,.35); margin-left: 8px; font-family: 'Courier New', monospace; }
+    .terminal-body { padding: 28px 32px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.7; }
+    .t-line { display: block; }
+    .t-gap { margin-top: 14px; }
+    .t-indent { padding-left: 20px; }
+    .t-prompt { color: var(--orange); font-weight: 700; }
+    .t-cmd { color: rgba(255,255,255,.85); }
+    .t-system { color: rgba(255,255,255,.3); font-style: italic; }
+    .t-label { color: var(--orange); font-weight: 700; }
+    .t-time { color: rgba(255,255,255,.35); }
+    .t-name { color: rgba(255,255,255,.7); }
+    .t-bullet { color: rgba(255,255,255,.25); }
+    .t-effect { color: #93c5fd; font-weight: 600; }
+    .t-muted { color: rgba(255,255,255,.2); font-style: italic; margin-top: 18px; }
+    .download-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 8px; }
+    .btn-download { display: inline-flex; align-items: center; gap: 12px; background: var(--orange); color: white; font-size: 16px; font-weight: 700; padding: 16px 36px; border-radius: 10px; text-decoration: none; transition: opacity .15s; cursor: pointer; }
+    .btn-download:hover { opacity: .88; }
+    .btn-icon { font-size: 18px; }
+    .download-note { font-size: 13px; color: var(--subtle); }
+    .download-note code { background: var(--white); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-size: 12px; color: var(--text); }
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+    .install-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 36px 32px; }
+    .install-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .install-icon { width: 48px; height: 48px; background: var(--orange-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .install-name { font-size: 18px; font-weight: 800; color: var(--black); }
+    .install-sub { font-size: 12px; color: var(--subtle); margin-top: 2px; }
+    .install-steps { list-style: none; padding: 0; margin-bottom: 24px; counter-reset: step; }
+    .install-steps li { counter-increment: step; display: flex; gap: 14px; font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+    .install-steps li::before { content: counter(step); min-width: 22px; height: 22px; background: var(--cream); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text); flex-shrink: 0; margin-top: 1px; }
+    .install-steps li strong { color: var(--text); font-weight: 600; }
+    .install-steps li code { background: #f0ede8; padding: 1px 6px; border-radius: 4px; font-size: 12px; color: var(--text); font-family: 'Courier New', monospace; }
+    .install-tip { background: var(--orange-bg); border-left: 3px solid var(--orange); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13px; color: var(--text); line-height: 1.6; }
+    .install-tip code { background: white; padding: 1px 6px; border-radius: 4px; font-size: 12px; font-family: 'Courier New', monospace; }
+    @media (max-width: 768px) {
+      nav,.hero,.section { padding-left: 24px; padding-right: 24px; }
+      .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 60px; }
+      .hero-right { display: none; }
+      .section-header { grid-template-columns: 1fr; gap: 16px; }
+      .analogy-row,.cmd-grid,.takeaway-grid,.install-grid { grid-template-columns: 1fr; }
+      .types-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <img src="https://vwygubjesgyhmkhezeyy.supabase.co/storage/v1/object/public/ASSET/SLOWDOONW.png" alt="AI Studio OS" />
+  </div>
+  <span class="nav-tag">Ressource formation</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-label">Module : Génération Vidéo IA</div>
+    <h1>Seedance 2.0<br><em>Vidéos IA pro.</em></h1>
+    <p class="hero-desc">Le modèle vidéo IA qui comprend la physique, les VFX et le texte 3D. Sans After Effects, sans montage.</p>
+    <div class="hero-pills">
+      <span class="pill">🧩 4 concepts clés</span>
+      <span class="pill">🎬 Higgsfield</span>
+      <span class="pill">⚡ Illimité actuellement</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-diagram">
+      <div class="brain-box">
+        <div class="brain-title">Capacités Seedance 2.0</div>
+        <div class="mem-row">
+          <div class="mem-label-row"><span>Cohérence physique</span><span>Élevée</span></div>
+          <div class="mem-bar"><div class="mem-fill fill-red"></div></div>
+        </div>
+        <div class="mem-row">
+          <div class="mem-label-row"><span>Cohérence visage (sans ref)</span><span>Faible</span></div>
+          <div class="mem-bar"><div class="mem-fill fill-orange"></div></div>
+        </div>
+        <div class="mem-row">
+          <div class="mem-label-row"><span>Omni Reference activée</span><span>Bonne</span></div>
+          <div class="mem-bar"><div class="mem-fill fill-green"></div></div>
+        </div>
+        <p class="brain-note">La qualité dépend du mode d'entrée choisi</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1 — Concept -->
+<div class="section-wrap">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">01 / Concept</div>
+        <h2>C'est quoi Seedance 2.0 ?</h2>
+      </div>
+      <p class="section-desc">Un modèle de génération vidéo IA disponible sur Higgsfield. Tu décris une scène, tu fournis des images de référence, il génère jusqu'à 15 secondes de vidéo avec VFX, texte 3D et cohérence physique intégrés.</p>
+    </div>
+    <div class="analogy-row">
+      <div class="ana-card">
+        <span class="ana-icon">🎞️</span>
+        <h3>Les autres modèles vidéo IA</h3>
+        <p>Tu génères une vidéo basique depuis un prompt. Pour ajouter des VFX, du texte 3D ou intégrer ta vidéo réelle, tu dois passer par After Effects, CapCut ou un autre outil de post-prod. Plusieurs étapes, plusieurs outils.</p>
+      </div>
+      <div class="vs-circle">
+        <div class="vs-line"></div>
+        <div class="vs-dot">VS</div>
+        <div class="vs-line"></div>
+      </div>
+      <div class="ana-card dark-card">
+        <span class="ana-icon">⚡</span>
+        <h3>Seedance 2.0</h3>
+        <p>Tu décris la scène en détail (avec le Claude Skill), tu fournis tes images de référence, Seedance génère une vidéo avec effets, physique du corps, texte 3D et transitions. En une seule génération. Zéro post-prod.</p>
+      </div>
+    </div>
+    <div class="insight-strip">
+      <span class="icon">💡</span>
+      <p><strong>La règle d'or :</strong> La qualité de ta vidéo dépend à 80% de la qualité de ton prompt. Un prompt vague = résultat moyen. Un prompt structuré en 6 couches = résultat pro. C'est pour ça qu'on utilise le Claude Skill.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 — Les 3 modes d'entrée -->
+<div class="section-wrap alt">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">02 / Modes d'entrée</div>
+        <h2>3 façons de travailler</h2>
+      </div>
+      <p class="section-desc">Le mode que tu choisis détermine tout le résultat. Commence par le prompt seul pour tester, puis monte en puissance avec l'Omni Reference.</p>
+    </div>
+    <div class="types-grid">
+      <div class="type-cell">
+        <div class="type-num">MODE 01</div>
+        <div class="type-icon-row">
+          <div class="type-icon icon-orange">✍️</div>
+          <div><div class="type-name">Prompt seul</div><div class="type-sub">Le mode de base</div></div>
+        </div>
+        <p class="type-desc">Tu décris la scène entièrement par écrit. Seedance génère la vidéo depuis zéro. Idéal pour tester rapidement une idée ou créer des scènes entièrement imaginaires.</p>
+        <div class="type-examples">
+          <div class="example-item"><span class="example-arrow">→</span>Scène abstraite ou imaginaire</div>
+          <div class="example-item"><span class="example-arrow">→</span>Test rapide d'un concept</div>
+          <div class="example-item"><span class="example-arrow">→</span>Décor ou paysage générique</div>
+        </div>
+      </div>
+      <div class="type-cell">
+        <div class="type-num">MODE 02</div>
+        <div class="type-icon-row">
+          <div class="type-icon icon-blue">📸</div>
+          <div><div class="type-name">Start Frame</div><div class="type-sub">Depuis une vidéo réelle</div></div>
+        </div>
+        <p class="type-desc">Tu filmes avec ton iPhone, tu fais un screenshot au moment exact de l'action, et tu le glisses dans Seedance comme image de départ. L'IA continue depuis ce point en cohérence avec la physique réelle.</p>
+        <div class="type-examples">
+          <div class="example-item"><span class="example-arrow">→</span>VFX sur une vidéo réelle</div>
+          <div class="example-item"><span class="example-arrow">→</span>Transition réel → irréel</div>
+          <div class="example-item"><span class="example-arrow">→</span>Interface holographique sur une action filmée</div>
+        </div>
+      </div>
+      <div class="type-cell">
+        <div class="type-num">MODE 03</div>
+        <div class="type-icon-row">
+          <div class="type-icon icon-green">🧩</div>
+          <div><div class="type-name">Omni Reference</div><div class="type-sub">Le mode avancé</div></div>
+        </div>
+        <p class="type-desc">Tu uploades plusieurs images simultanément dans la barre de prompt (character sheet + décor + produit). L'IA comprend le contexte global et génère avec une cohérence maximale sur tous les éléments.</p>
+        <div class="type-examples">
+          <div class="example-item"><span class="example-arrow">→</span>Character reveal précis</div>
+          <div class="example-item"><span class="example-arrow">→</span>Texte 3D intégré dans un lieu réel</div>
+          <div class="example-item"><span class="example-arrow">→</span>Meta Ads produit zero-edit</div>
+        </div>
+      </div>
+    </div>
+    <div class="stack-note">
+      <span class="stack-icon">🎯</span>
+      <div>
+        <h4>Omni Reference = l'arme secrète</h4>
+        <p>La majorité des utilisateurs s'arrêtent au prompt seul. L'Omni Reference, c'est ce qui permet de générer des vidéos que personne d'autre ne peut reproduire, parce que <strong>toi seul as tes références</strong> : ton visage, ton produit, ton décor. Upload plusieurs images en même temps, et Seedance comprend tout le contexte d'un coup.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 — Comment on prompt -->
+<div class="section-wrap">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">03 / Fonctionnement</div>
+        <h2>Comment on prompt</h2>
+      </div>
+      <p class="section-desc">Seedance attend des prompts structurés en 6 couches avec timestamps. On utilise le Claude Skill "video prompt builder" pour générer ça automatiquement depuis une description simple.</p>
+    </div>
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="flow-num-cell"><div class="flow-num">1</div></div>
+        <div class="flow-text">
+          <h4>Installe le Claude Skill</h4>
+          <p>Dans Claude → menu gauche → Customize → Skills → "+" → Create skill → Upload a skill → double-clic sur "video-prompt-builder". Il apparaît dans tes Personal Skills. C'est gratuit, une seule fois.</p>
+          <span class="code-tag">slowdoown-seedance-prompt-builder.skill</span>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num-cell"><div class="flow-num">2</div></div>
+        <div class="flow-text">
+          <h4>Décris ta scène en langage naturel</h4>
+          <p>Tu dis simplement ce que tu veux : "une pub 6 secondes où un homme touche sa montre et une interface holographique apparaît avec des dinosaures". Claude lit le skill et génère un prompt structuré shot par shot avec timestamps, effets, couleurs hex, mouvements de caméra.</p>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num-cell"><div class="flow-num">3</div></div>
+        <div class="flow-text">
+          <h4>Copie uniquement la bonne partie</h4>
+          <p>Claude génère 4 sections. Tu ne copies que la partie qui commence par "Shot one" jusqu'en bas. Tu ignores le "Master Effects Inventory" et la "Effects Density Map" — ils ne servent pas à Seedance. Vérifie que ton texte fait moins de 3 000 caractères. Si c'est trop long : demande à Claude "make this under 3,000 characters".</p>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num-cell"><div class="flow-num last-num">✓</div></div>
+        <div class="flow-text">
+          <h4>Règle les paramètres dans Higgsfield</h4>
+          <p>Colle ton prompt dans Seedance 2.0 sur Higgsfield. Règle le ratio (16:9 pour horizontal, 9:16 pour Reels) et la durée avec le curseur (max 15 secondes). Lance la génération.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 — 5 cas d'usage concrets -->
+<div class="section-wrap alt">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">04 / Pratique</div>
+        <h2>5 cas d'usage à maîtriser</h2>
+      </div>
+      <p class="section-desc">Ces 5 techniques couvrent 90% des situations que tu rencontreras. Commence par le VFX sur vidéo réelle — c'est le plus impressionnant pour comprendre la puissance de Seedance.</p>
+    </div>
+    <div class="cmd-grid">
+      <div class="cmd-cell">
+        <div class="cmd-top"><div class="cmd-code">VFX sur vidéo réelle</div><span class="cmd-arrow">→</span></div>
+        <p class="cmd-desc">Filme avec ton iPhone. Screenshot au moment exact de l'action. Glisse l'image dans Seedance comme Start Frame. L'IA continue en cohérence avec la physique de ton corps — transitions réel/irréel parfaites.</p>
+      </div>
+      <div class="cmd-cell">
+        <div class="cmd-top"><div class="cmd-code">Character Reveal</div><span class="cmd-arrow">→</span></div>
+        <p class="cmd-desc">Upload une character sheet de ton personnage via Omni Reference. Dans le prompt, fais commencer la scène avec la tête baissée. Quand le personnage relève la tête, l'IA reconstruit le visage avec précision. Effet narratif fort, zéro post-prod.</p>
+      </div>
+      <div class="cmd-cell">
+        <div class="cmd-top"><div class="cmd-code">Texte 3D natif</div><span class="cmd-arrow">→</span></div>
+        <p class="cmd-desc">Upload l'image du décor + une image de référence de ton texte 3D via Omni Reference. Demande à Claude un prompt d'intégration avec ombres et rotation. Seedance gère la physique : ombres réalistes, rotation dans l'espace, interaction avec la scène.</p>
+      </div>
+      <div class="cmd-cell">
+        <div class="cmd-top"><div class="cmd-code">Meta Ads zero-edit</div><span class="cmd-arrow">→</span></div>
+        <p class="cmd-desc">Upload l'image de ton produit en Omni Reference. Décris une pub de 15 secondes à Claude avec les effets souhaités. Seedance génère une publicité complète avec VFX, texte et montage en une seule génération. Scalable pour de l'A/B testing massif.</p>
+      </div>
+    </div>
+
+    <!-- Pièges -->
+    <div style="margin-top: 48px;">
+      <div class="section-num" style="margin-bottom: 16px;">⚠️ Pièges à éviter</div>
+      <div class="flow-list">
+        <div class="flow-item">
+          <div class="flow-num-cell"><div class="flow-num" style="background:#ef4444;">!</div></div>
+          <div class="flow-text">
+            <h4>Prompt trop long → Higgsfield le bloque</h4>
+            <p>La limite est 3 000 caractères sur Higgsfield (4 000 sur d'autres plateformes). Si Claude génère trop long, colle le texte et dis : "make this under 3,000 characters". Pas besoin de reformuler manuellement.</p>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num-cell"><div class="flow-num" style="background:#ef4444;">!</div></div>
+          <div class="flow-text">
+            <h4>Copier tout le texte Claude → mauvais résultat</h4>
+            <p>Copie uniquement à partir de "Shot one". Le Master Effects Inventory et la Effects Density Map sont pour toi, pas pour Seedance. Les inclure dilue le prompt et dégrade le résultat.</p>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num-cell"><div class="flow-num" style="background:#ef4444;">!</div></div>
+          <div class="flow-text">
+            <h4>Plan séquence coupé toutes les 2 secondes</h4>
+            <p>Par défaut, le Claude Skill découpe en blocs de 2 secondes avec des coupes. Si tu veux un plan ininterrompu, précise "seamless transition" dans ta description à Claude. Sinon tu obtiens un montage automatique.</p>
+          </div>
+        </div>
+        <div class="flow-item">
+          <div class="flow-num-cell"><div class="flow-num last-num">!</div></div>
+          <div class="flow-text">
+            <h4>Incohérence sur les vidéos de 15 secondes</h4>
+            <p>L'IA peut "devenir folle" vers la fin d'une vidéo longue avec beaucoup d'effets. Pour les séquences VFX complexes, reste sur 6-10 secondes. Réserve les 15 secondes pour les scènes plus calmes comme les Meta Ads.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TERMINAL PREVIEW + DOWNLOAD -->
+<div class="section-wrap alt">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">Le skill en action</div>
+        <h2>Ce que ça donne</h2>
+      </div>
+      <p class="section-desc">Tu décris une scène en une phrase. Le skill génère le prompt complet, structuré, prêt à coller dans Seedance.</p>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal-wrap">
+      <div class="terminal-bar">
+        <span class="t-dot t-red"></span>
+        <span class="t-dot t-yellow"></span>
+        <span class="t-dot t-green"></span>
+        <span class="t-title">slowdoown-seedance-prompt-builder — Claude</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">you</span><span class="t-cmd"> → une pub 15 secondes style The Office pour une barre chocolatée, drôle, bureau, 6 shots max</span></div>
+        <div class="t-line t-gap"><span class="t-system">reading slowdoown-seedance-prompt-builder.skill...</span></div>
+        <div class="t-line t-gap"><span class="t-label">SHOT 1</span><span class="t-time"> (00:00–00:03)</span><span class="t-name"> — Office Wide, Cold Open</span></div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span><span class="t-effect"> EFFECT:</span> Handheld drift + slow pan right</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> Grey open-plan office, fluorescent lighting, cluttered desks</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> Frame breathes slightly — ambient noise only, no music</div>
+        <div class="t-line t-gap"><span class="t-label">SHOT 2</span><span class="t-time"> (00:03–00:06)</span><span class="t-name"> — The Discovery</span></div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span><span class="t-effect"> EFFECT:</span> Slow documentary zoom + late rack focus</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> Camera finds office worker unwrapping a chocolate bar</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> Zoom arrives slightly too late — lands as the wrapper crinkles</div>
+        <div class="t-line t-gap"><span class="t-label">SHOT 3</span><span class="t-time"> (00:06–00:09)</span><span class="t-name"> — The To-Camera Beat ★ SIGNATURE</span></div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span><span class="t-effect"> EFFECT:</span> Static locked-off frame + near-imperceptible creep zoom</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> Subject looks directly into camera. Deadpan. Still chewing.</div>
+        <div class="t-line t-indent"><span class="t-bullet">•</span> One beat. Two beats. Three beats. The silence is the joke.</div>
+        <div class="t-line t-gap t-muted">... + 3 shots générés · 847 caractères · ✓ sous la limite Higgsfield</div>
+      </div>
+    </div>
+
+    <!-- Bouton download -->
+    <div class="download-wrap">
+      <a href="#" class="btn-download" onclick="return false;">
+        <span class="btn-icon">⬇</span>
+        Télécharger le skill
+      </a>
+      <p class="download-note">Fichier <code>.skill</code> · Compatible Claude Desktop &amp; Claude Code</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMMENT INTÉGRER LE SKILL -->
+<div class="section-wrap">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-num">Installation</div>
+        <h2>Comment intégrer le skill</h2>
+      </div>
+      <p class="section-desc">Deux environnements compatibles. Même fichier, même résultat. Choisis celui que tu utilises déjà.</p>
+    </div>
+
+    <div class="install-grid">
+
+      <!-- Claude App -->
+      <div class="install-card">
+        <div class="install-header">
+          <div class="install-icon">💬</div>
+          <div>
+            <div class="install-name">Claude App</div>
+            <div class="install-sub">claude.ai · application desktop</div>
+          </div>
+        </div>
+        <ol class="install-steps">
+          <li>Ouvre Claude et clique sur <strong>ton prénom</strong> en haut à gauche</li>
+          <li>Va dans <strong>Customize Claude</strong></li>
+          <li>Section <strong>Skills</strong> → clique sur <strong>"+"</strong></li>
+          <li>Clique sur <strong>Create skill</strong> puis <strong>Upload a skill</strong></li>
+          <li>Double-clique sur <code>slowdoown-seedance-prompt-builder.skill</code></li>
+          <li>Le skill apparaît dans <strong>Personal Skills</strong> ✓</li>
+        </ol>
+        <div class="install-tip">Pour l'utiliser : décris ta scène normalement dans le chat. Claude lit le skill automatiquement et génère le prompt structuré.</div>
+      </div>
+
+      <!-- Claude Code / VS Code -->
+      <div class="install-card">
+        <div class="install-header">
+          <div class="install-icon">⌨️</div>
+          <div>
+            <div class="install-name">Claude Code</div>
+            <div class="install-sub">VS Code · terminal</div>
+          </div>
+        </div>
+        <ol class="install-steps">
+          <li>Ouvre VS Code avec l'extension <strong>Claude Code</strong></li>
+          <li>Tape <code>/</code> dans le chat pour ouvrir le menu des skills</li>
+          <li>Sélectionne <strong>Add skill</strong> ou va dans les settings Claude Code</li>
+          <li>Glisse le fichier <code>.skill</code> dans le dossier <code>~/.claude/skills/</code></li>
+          <li>Relance Claude Code — le skill est disponible</li>
+          <li>Tape <code>/slowdoown-seedance-prompt-builder</code> pour l'activer ✓</li>
+        </ol>
+        <div class="install-tip">Pour l'utiliser : tape <code>/slowdoown-seedance-prompt-builder</code> suivi de ta description de scène directement dans le chat.</div>
+      </div>
+
+    </div>
+
+    <div class="insight-strip" style="margin-top: 0;">
+      <span class="icon">💡</span>
+      <p><strong>Une seule installation.</strong> Une fois le skill ajouté, il est disponible dans toutes tes conversations. Tu n'as pas besoin de le réactiver à chaque fois.</p>
+    </div>
+  </div>
+</div>
+
+<!-- RÉSUMÉ -->
+<div class="section-wrap">
+  <div class="section">
+    <div class="section-header full">
+      <div><div class="section-num">Résumé</div><h2>3 choses à retenir</h2></div>
+    </div>
+    <div class="takeaway-grid">
+      <div class="takeaway-card">
+        <div class="takeaway-num">01</div>
+        <div class="takeaway-title">Le mode d'entrée, c'est tout</div>
+        <p class="takeaway-text">Prompt seul pour tester. Start Frame pour intégrer ta vidéo réelle. Omni Reference pour la précision maximale. Choisir le bon mode avant de prompter, c'est 50% du résultat.</p>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-num">02</div>
+        <div class="takeaway-title">Le skill Claude fait le travail lourd</div>
+        <p class="takeaway-text">Tu n'as pas à écrire des prompts techniques à la main. Tu décris l'idée en langage naturel, le skill génère les 6 couches (timestamps, caméra, hex, VFX, décor, ton). Tu copies à partir de "Shot one", tu colles dans Seedance.</p>
+      </div>
+      <div class="takeaway-card">
+        <div class="takeaway-num">03</div>
+        <div class="takeaway-title">Moins de 3 000 caractères, toujours</div>
+        <p class="takeaway-text">Higgsfield bloque les prompts trop longs. Avant de générer, vérifie la longueur. Si c'est trop long, une seule commande à Claude : "make this under 3,000 characters". Ça ne dégrade pas le résultat.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <footer>
+    <img src="https://vwygubjesgyhmkhezeyy.supabase.co/storage/v1/object/public/ASSET/SLOWDOONW.png" alt="AI Studio OS" />
+    <p>Ressource créée par <span>AI Studio OS</span> · Formation Génération Vidéo IA</p>
+  </footer>
+</div>
+
+</body>
+</html>
