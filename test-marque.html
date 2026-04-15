@@ -149,22 +149,54 @@
   </div>
   <div class="hero-right">
     <div class="hero-diagram">
-      <div class="brain-box">
-        <div class="brain-title">Taux de succès moyen</div>
-        <div class="mem-row">
-          <div class="mem-label-row"><span>Brief lu en diagonal</span><span>20%</span></div>
-          <div class="mem-bar"><div class="mem-fill fill-red" style="width:20%"></div></div>
+      <style>
+        .cl-box { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+        .cl-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--subtle); margin-bottom: 24px; }
+        .cl-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+        .cl-row:last-of-type { border-bottom: none; }
+        .cl-checkbox { width: 28px; height: 28px; border-radius: 8px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.3s, border-color 0.3s; }
+        .cl-checkbox.checked { background: var(--orange); border-color: var(--orange); }
+        .cl-checkmark { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.5; fill: none; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset 0s; }
+        .cl-checkbox.checked .cl-checkmark { stroke-dashoffset: 0; transition: stroke-dashoffset 0.3s ease 0.15s; }
+        .cl-label { flex: 1; }
+        .cl-label strong { font-size: 14px; font-weight: 700; color: var(--black); display: block; margin-bottom: 2px; }
+        .cl-label span { font-size: 12px; color: var(--muted); }
+        .cl-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: #f0fdf4; color: #16a34a; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
+        .cl-badge.show { opacity: 1; }
+        .cl-note { margin-top: 20px; font-size: 12px; color: var(--subtle); text-align: center; padding-top: 16px; border-top: 1px solid var(--border); }
+      </style>
+      <div class="cl-box" id="cl-box">
+        <div class="cl-title">Checklist de conformité</div>
+        <div class="cl-row">
+          <div class="cl-checkbox" id="cl1"><svg class="cl-checkmark" viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+          <div class="cl-label"><strong>Deadline respectée</strong><span>Livraison dans les temps</span></div>
+          <span class="cl-badge" id="b1">✓ OK</span>
         </div>
-        <div class="mem-row">
-          <div class="mem-label-row"><span>Brief analysé + conformité</span><span>65%</span></div>
-          <div class="mem-bar"><div class="mem-fill fill-green"></div></div>
+        <div class="cl-row">
+          <div class="cl-checkbox" id="cl2"><svg class="cl-checkmark" viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+          <div class="cl-label"><strong>Format correct</strong><span>Bonne taille, bonne résolution</span></div>
+          <span class="cl-badge" id="b2">✓ OK</span>
         </div>
-        <div class="mem-row">
-          <div class="mem-label-row"><span>Brief + livraison pro</span><span>91%</span></div>
-          <div class="mem-bar"><div class="mem-fill fill-red"></div></div>
+        <div class="cl-row">
+          <div class="cl-checkbox" id="cl3"><svg class="cl-checkmark" viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+          <div class="cl-label"><strong>Qualité pro</strong><span>Aucun watermark, fichier propre</span></div>
+          <span class="cl-badge" id="b3">✓ OK</span>
         </div>
-        <p class="brain-note">La qualité créative compte moins que tu crois. La conformité, c'est ce qui fait la différence.</p>
+        <p class="cl-note">3/3 règles respectées — transmissible à la marque</p>
       </div>
+      <script>
+        function checkItem(id, badgeId, delay) {
+          setTimeout(() => {
+            document.getElementById(id).classList.add('checked');
+            setTimeout(() => document.getElementById(badgeId).classList.add('show'), 350);
+          }, delay);
+        }
+        window.addEventListener('load', () => {
+          checkItem('cl1', 'b1', 600);
+          checkItem('cl2', 'b2', 1200);
+          checkItem('cl3', 'b3', 1800);
+        });
+      </script>
     </div>
   </div>
 </div>
