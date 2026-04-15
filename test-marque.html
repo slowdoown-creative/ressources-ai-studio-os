@@ -118,14 +118,51 @@
     .roadmap-label p { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
     @media (max-width: 768px) {
-      nav,.hero,.section { padding-left: 24px; padding-right: 24px; }
-      .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 60px; }
+      /* Nav */
+      nav { padding: 0 20px; }
+      /* Hero */
+      .hero { grid-template-columns: 1fr; gap: 24px; padding: 40px 20px 32px; }
+      .hero h1 { font-size: 32px; }
+      .hero-desc { font-size: 15px; }
       .hero-right { display: none; }
-      .section-header { grid-template-columns: 1fr; gap: 16px; }
-      .analogy-row,.cmd-grid,.takeaway-grid { grid-template-columns: 1fr; }
+      /* Sections */
+      .section { padding: 48px 20px; }
+      .section-header { grid-template-columns: 1fr; gap: 12px; margin-bottom: 32px; }
+      h2 { font-size: 26px; }
+      /* Analogy */
+      .analogy-row { grid-template-columns: 1fr; gap: 16px; }
+      .vs-circle { flex-direction: row; }
+      .vs-line { width: 40px; height: 1px; }
+      /* Grids */
       .types-grid { grid-template-columns: 1fr; }
-      .roadmap { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .cmd-grid { grid-template-columns: 1fr; }
+      .takeaway-grid { grid-template-columns: 1fr; }
+      .file-grid { grid-template-columns: 1fr; }
+      /* Roadmap */
+      .roadmap { grid-template-columns: 1fr 1fr; gap: 24px; }
       .roadmap-connector { display: none; }
+      /* Countdown */
+      #countdown-wrap { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
+      #countdown-wrap > div:last-child { width: 100%; justify-content: space-between; }
+      #cd-days, #cd-hours, #cd-mins, #cd-secs { font-size: 28px !important; }
+      /* Mission cards */
+      [style*="repeat(4,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+      /* Product cards */
+      [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+      /* Palette */
+      [style*="repeat(5,1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
+      /* Mood + photo grid */
+      [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+      /* Don'ts grid */
+      [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+      /* Stack note */
+      .stack-note { grid-template-columns: 1fr; gap: 16px; }
+      /* Flow */
+      .flow-num-cell { padding: 20px 0; }
+      /* Footer */
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+      /* Warning banner */
+      [style*="padding:14px 48px"] { padding: 12px 20px !important; }
     }
   </style>
 </head>
