@@ -206,15 +206,16 @@
     </div>
   </div>
   <!-- Loom embed -->
-  <div style="grid-column: 1 / -1; margin-top:8px;">
-    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--orange); margin-bottom:12px;">⚠️ Regarde la vidéo avant de commencer</div>
-    <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:12px; overflow:hidden; border:1px solid var(--border);">
-      <iframe src="https://www.loom.com/embed/b56d929689d84b789587e135daab104c" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+  <div style="grid-column: 1 / -1; margin-top:8px; display:flex; flex-direction:column; gap:8px;">
+    <div style="font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--orange); text-align:center;">⚠️ Regarde la vidéo avant de commencer</div>
+    <div style="max-width:720px; margin:0 auto; width:100%;">
+      <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:12px; overflow:hidden; border:1px solid var(--border);">
+        <iframe src="https://www.loom.com/embed/b56d929689d84b789587e135daab104c" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+      </div>
     </div>
-  </div>
 
   <!-- Countdown -->
-  <div id="countdown-wrap" style="grid-column: 1 / -1; background:var(--black); border-radius:14px; padding:28px 36px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-top:8px;">
+  <div id="countdown-wrap" style="background:var(--black); border-radius:14px; padding:28px 36px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-top:8px;">
     <div>
       <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.4); margin-bottom:4px;">Temps restant avant la deadline</div>
       <div style="font-size:13px; color:rgba(255,255,255,.5);">Samedi 18 avril 2026 · 17h00 heure de Bali</div>
@@ -266,6 +267,7 @@
       setInterval(tick, 1000);
     })();
   </script>
+  </div>
 
   <!-- Mission cards — full width inside hero -->
   <div style="grid-column: 1 / -1; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; padding-top:8px; border-top:1px solid var(--border); margin-top:8px;">
