@@ -455,6 +455,60 @@
         </div>
       </div>
     </div>
+
+    <style>
+      @keyframes highlightSweep {
+        0%   { background-size: 0% 100%; }
+        100% { background-size: 100% 100%; }
+      }
+      @keyframes phraseFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .phrase-highlight {
+        opacity: 0;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--black);
+        line-height: 1.5;
+        padding: 28px 40px;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .phrase-highlight.visible {
+        animation: phraseFadeIn 0.5s ease forwards;
+      }
+      .phrase-highlight .highlight-text {
+        background-image: linear-gradient(120deg, #FFE0C8 0%, #FFE0C8 100%);
+        background-repeat: no-repeat;
+        background-position: 0 88%;
+        background-size: 0% 40%;
+        padding: 2px 4px;
+      }
+      .phrase-highlight.visible .highlight-text {
+        animation: highlightSweep 0.8s ease 0.4s forwards;
+      }
+    </style>
+
+    <div class="phrase-highlight" id="phrase-key">
+      Tu ne crées pas ce qui te plaît. <span class="highlight-text">Tu crées ce que la marque a demandé.</span>
+    </div>
+
+    <script>
+      const phraseEl = document.getElementById('phrase-key');
+      const phraseObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            phraseEl.classList.add('visible');
+            phraseObs.unobserve(phraseEl);
+          }
+        });
+      }, { threshold: 0.5 });
+      phraseObs.observe(phraseEl);
+    </script>
+
   </div>
 </div>
 
