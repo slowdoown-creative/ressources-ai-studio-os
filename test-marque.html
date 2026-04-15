@@ -207,7 +207,9 @@
   </div>
   <!-- Loom embed -->
   <div style="grid-column: 1 / -1; margin-top:8px; display:flex; flex-direction:column; gap:8px;">
-    <div style="font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--orange); text-align:center;">⚠️ Regarde la vidéo avant de commencer</div>
+    <div style="text-align:center;">
+      <span style="display:inline-block; background:#fff4ee; border:2px solid var(--orange); border-radius:40px; padding:10px 28px; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--orange);">⚠️ Regarde la vidéo avant de commencer</span>
+    </div>
     <div style="max-width:720px; margin:0 auto; width:100%;">
       <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:12px; overflow:hidden; border:1px solid var(--border);">
         <iframe src="https://www.loom.com/embed/b56d929689d84b789587e135daab104c" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
@@ -218,7 +220,7 @@
   <div id="countdown-wrap" style="background:var(--black); border-radius:14px; padding:28px 36px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-top:8px;">
     <div>
       <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.4); margin-bottom:4px;">Temps restant avant la deadline</div>
-      <div style="font-size:13px; color:rgba(255,255,255,.5);">Samedi 18 avril 2026 · 17h00 heure de Bali</div>
+      <div style="font-size:13px; color:rgba(255,255,255,.5);">Dimanche 19 avril 2026 · 17h00 heure de Bali</div>
     </div>
     <div style="display:flex; gap:16px; align-items:center;">
       <div style="text-align:center;">
@@ -245,7 +247,7 @@
   <script>
     (function() {
       // Deadline : samedi 18 avril 2026 à 17:00 WITA (UTC+8)
-      var deadline = new Date('2026-04-18T17:00:00+08:00');
+      var deadline = new Date('2026-04-19T17:00:00+08:00');
       function pad(n) { return n < 10 ? '0' + n : n; }
       function tick() {
         var now = new Date();
@@ -273,8 +275,8 @@
   <div style="grid-column: 1 / -1; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; padding-top:8px; border-top:1px solid var(--border); margin-top:8px;">
     <div style="background:var(--cream); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
       <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--subtle); margin-bottom:8px;">Deadline</div>
-      <div style="font-size:16px; font-weight:800; color:var(--black);">18 avril 2026</div>
-      <div style="font-size:12px; color:var(--muted); margin-top:2px;">Samedi</div>
+      <div style="font-size:16px; font-weight:800; color:var(--black);">19 avril 2026</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:2px;">Dimanche</div>
     </div>
     <div style="background:var(--cream); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
       <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--subtle); margin-bottom:8px;">Livrables</div>
