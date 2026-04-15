@@ -205,6 +205,60 @@
       </script>
     </div>
   </div>
+  <!-- Countdown -->
+  <div id="countdown-wrap" style="grid-column: 1 / -1; background:var(--black); border-radius:14px; padding:28px 36px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-top:8px;">
+    <div>
+      <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.4); margin-bottom:4px;">Temps restant avant la deadline</div>
+      <div style="font-size:13px; color:rgba(255,255,255,.5);">Samedi 18 avril 2026 · 17h00 heure de Bali</div>
+    </div>
+    <div style="display:flex; gap:16px; align-items:center;">
+      <div style="text-align:center;">
+        <div id="cd-days" style="font-size:40px; font-weight:900; color:var(--white); line-height:1; letter-spacing:-.03em;">--</div>
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); margin-top:4px;">Jours</div>
+      </div>
+      <div style="font-size:32px; font-weight:300; color:var(--orange); padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="cd-hours" style="font-size:40px; font-weight:900; color:var(--white); line-height:1; letter-spacing:-.03em;">--</div>
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); margin-top:4px;">Heures</div>
+      </div>
+      <div style="font-size:32px; font-weight:300; color:var(--orange); padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="cd-mins" style="font-size:40px; font-weight:900; color:var(--white); line-height:1; letter-spacing:-.03em;">--</div>
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); margin-top:4px;">Minutes</div>
+      </div>
+      <div style="font-size:32px; font-weight:300; color:var(--orange); padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="cd-secs" style="font-size:40px; font-weight:900; color:var(--orange); line-height:1; letter-spacing:-.03em;">--</div>
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.4); margin-top:4px;">Secondes</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      // Deadline : samedi 18 avril 2026 à 17:00 WITA (UTC+8)
+      var deadline = new Date('2026-04-18T17:00:00+08:00');
+      function pad(n) { return n < 10 ? '0' + n : n; }
+      function tick() {
+        var now = new Date();
+        var diff = deadline - now;
+        if (diff <= 0) {
+          document.getElementById('countdown-wrap').innerHTML = '<div style="color:var(--orange);font-size:20px;font-weight:800;width:100%;text-align:center;">⏰ Deadline atteinte</div>';
+          return;
+        }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = pad(d);
+        document.getElementById('cd-hours').textContent = pad(h);
+        document.getElementById('cd-mins').textContent = pad(m);
+        document.getElementById('cd-secs').textContent = pad(s);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+
   <!-- Mission cards — full width inside hero -->
   <div style="grid-column: 1 / -1; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; padding-top:8px; border-top:1px solid var(--border); margin-top:8px;">
     <div style="background:var(--cream); border:1px solid var(--border); border-radius:10px; padding:20px 22px;">
