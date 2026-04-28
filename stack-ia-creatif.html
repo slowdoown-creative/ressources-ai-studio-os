@@ -24,18 +24,25 @@
     .hero-desc { font-size: 18px; color: var(--muted); line-height: 1.65; margin-bottom: 36px; max-width: 420px; }
     .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
     .pill { font-size: 13px; color: var(--text); background: var(--white); border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; }
-    .hero-diagram { width: 100%; max-width: 360px; }
-    .brain-box { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
-    .brain-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--subtle); margin-bottom: 20px; }
-    .mem-row { margin-bottom: 12px; }
-    .mem-label-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 13px; }
-    .mem-label-row span:first-child { color: var(--text); font-weight: 500; }
-    .mem-label-row span:last-child { color: var(--subtle); }
-    .mem-bar { height: 8px; background: #ebe8e2; border-radius: 4px; overflow: hidden; }
-    .mem-fill { height: 100%; border-radius: 4px; }
-    .fill-red { background: #ef4444; width: 91%; }
-    .fill-orange { background: var(--orange); width: 23%; }
-    .brain-note { margin-top: 18px; font-size: 12px; color: var(--subtle); text-align: center; border-top: 1px solid var(--border); padding-top: 14px; }
+    .hero-diagram { width: 100%; max-width: 380px; perspective: 1200px; }
+    .stack-tower { display: flex; flex-direction: column; gap: 14px; transform: rotateX(8deg) rotateZ(-2deg); transform-style: preserve-3d; }
+    .stack-layer { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; box-shadow: 0 8px 24px rgba(15,15,15,.06), 0 2px 6px rgba(15,15,15,.04); position: relative; transition: transform .3s ease; }
+    .stack-layer:hover { transform: translateY(-3px); }
+    .stack-layer-1 { transform: translateZ(30px); }
+    .stack-layer-2 { transform: translateZ(15px); }
+    .stack-layer-3 { transform: translateZ(0); }
+    .stack-emoji-box { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .stack-emoji-1 { background: var(--orange-bg); }
+    .stack-emoji-2 { background: #eef2ff; }
+    .stack-emoji-3 { background: #f0fdf4; }
+    .stack-info-num { font-size: 9px; font-weight: 800; color: var(--subtle); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 3px; }
+    .stack-info-name { font-size: 15px; font-weight: 800; color: var(--black); line-height: 1.2; }
+    .stack-info-role { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .stack-tag { background: var(--black); color: var(--orange); font-family: 'Courier New',monospace; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 5px; letter-spacing: .04em; }
+    .stack-connector { display: flex; align-items: center; justify-content: center; height: 14px; margin: -7px 0; position: relative; z-index: 0; }
+    .stack-connector::before { content: ''; width: 2px; height: 14px; background: linear-gradient(to bottom, var(--orange), rgba(255,101,0,.2)); border-radius: 2px; }
+    .stack-caption { text-align: center; font-size: 11px; color: var(--subtle); letter-spacing: .08em; text-transform: uppercase; font-weight: 700; margin-top: 24px; }
+    .stack-caption span { color: var(--orange); }
     .section-wrap { border-top: 1px solid var(--border); }
     .section-wrap.alt { background: var(--white); }
     .section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
@@ -135,18 +142,38 @@
   </div>
   <div class="hero-right">
     <div class="hero-diagram">
-      <div class="brain-box">
-        <div class="brain-title">Qualité finale</div>
-        <div class="mem-row">
-          <div class="mem-label-row"><span>1 outil pour tout</span><span>Sale</span></div>
-          <div class="mem-bar"><div class="mem-fill fill-red"></div></div>
+      <div class="stack-tower">
+        <div class="stack-layer stack-layer-1">
+          <div class="stack-emoji-box stack-emoji-1">🎨</div>
+          <div>
+            <div class="stack-info-num">Layer 01</div>
+            <div class="stack-info-name">Midjourney</div>
+            <div class="stack-info-role">La vision créative</div>
+          </div>
+          <span class="stack-tag">.mj</span>
         </div>
-        <div class="mem-row">
-          <div class="mem-label-row"><span>3 outils empilés</span><span>Pro</span></div>
-          <div class="mem-bar"><div class="mem-fill fill-orange"></div></div>
+        <div class="stack-connector"></div>
+        <div class="stack-layer stack-layer-2">
+          <div class="stack-emoji-box stack-emoji-2">🍌</div>
+          <div>
+            <div class="stack-info-num">Layer 02</div>
+            <div class="stack-info-name">Nano Banana Pro</div>
+            <div class="stack-info-role">La précision</div>
+          </div>
+          <span class="stack-tag">.fix</span>
         </div>
-        <p class="brain-note">Le combo fait toute la diff</p>
+        <div class="stack-connector"></div>
+        <div class="stack-layer stack-layer-3">
+          <div class="stack-emoji-box stack-emoji-3">🎬</div>
+          <div>
+            <div class="stack-info-num">Layer 03</div>
+            <div class="stack-info-name">Seedance 2.0</div>
+            <div class="stack-info-role">L'animation</div>
+          </div>
+          <span class="stack-tag">.mp4</span>
+        </div>
       </div>
+      <p class="stack-caption">Le <span>stack</span> qui change tout</p>
     </div>
   </div>
 </div>
